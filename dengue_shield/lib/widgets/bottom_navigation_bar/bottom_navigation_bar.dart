@@ -1,11 +1,15 @@
 import 'dart:io';
+import 'package:dengue_shield/config/theme.dart';
+import 'package:dengue_shield/screens/main/action_page.dart';
+import 'package:dengue_shield/screens/main/home_page.dart';
+import 'package:dengue_shield/screens/main/inform_page.dart';
+import 'package:dengue_shield/screens/main/map_page.dart';
+import 'package:dengue_shield/screens/main/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../alret_dialog/alert_dialog.dart';
 import '../appbar/appbar.dart';
-
-//final GlobalKey<_CustomBottomNavState> bottomNavKey = GlobalKey();
 
 class CustomBottomNav extends StatefulWidget {
   const CustomBottomNav({Key? key}) : super(key: key);
@@ -21,10 +25,11 @@ class CustomBottomNavState extends State<CustomBottomNav> {
 
 
   final List<_NavItem> _navItems = [
-    _NavItem(label: 'Home', iconPath: 'assets/bottom_nav_bar/home-2.svg'),
-    _NavItem(label: 'My Deals', iconPath: 'assets/bottom_nav_bar/shop.svg'),
-    _NavItem(label: 'Search', iconPath: 'assets/bottom_nav_bar/search-normal.svg'),
-    _NavItem(label: 'Profile', iconPath: 'assets/bottom_nav_bar/frame.svg'),
+    _NavItem(label: 'Home', iconPath: 'assets/navigation_bar/home.svg'),
+    _NavItem(label: 'inform', iconPath: 'assets/navigation_bar/inform.svg'),
+    _NavItem(label: 'map', iconPath: 'assets/navigation_bar/map.svg'),
+    _NavItem(label: 'action', iconPath: 'assets/navigation_bar/action.svg'),
+    _NavItem(label: 'Profile', iconPath: 'assets/navigation_bar/profile.svg'),
   ];
 
   void navigateTo(int index) {
@@ -64,40 +69,29 @@ class CustomBottomNavState extends State<CustomBottomNav> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (isSelected)
-                Container(
-                  //width: 100,
-                  height: screenWidth*0.015,
-                  decoration: BoxDecoration(
-                    color: Color(0xff3AC2FF),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(screenWidth * 0.1),
-                      bottomRight: Radius.circular(screenWidth * 0.1),
-                    ),
-                  ),
-                ),
-               SizedBox(height: screenWidth*0.03),
+              SizedBox(height: screenWidth*0.03),
               AnimatedScale(
-                scale: isSelected ? 1.2 : 1.0,
+                scale: isSelected ? 1.0 : 0.8,
                 duration: const Duration(milliseconds: 300),
                 child: SvgPicture.asset(
                   _navItems[index].iconPath,
                   height: 24,
                   colorFilter: ColorFilter.mode(
-                    isSelected ? Color(0xff3AC2FF) : Colors.black,
+                    isSelected ? mainColor : Colors.black,
                     BlendMode.srcIn,
                   ),
                 ),
               ),
-              SizedBox(height: screenWidth*0.015),
+              SizedBox(height: screenWidth*0.01),
               Text(
                 _navItems[index].label,
                 style: TextStyle(
-                  color: isSelected ? Color(0xff3AC2FF) : Colors.black,
+                  fontSize: screenWidth*0.03,
+                  color: isSelected ? mainColor : Colors.black,
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 ),
               ),
-              SizedBox(height: screenWidth*0.02),
+              SizedBox(height: screenWidth*0.025),
             ],
           ),
         ),
@@ -114,21 +108,21 @@ class CustomBottomNavState extends State<CustomBottomNav> {
         confirmText: 'OK',
         cancelText: 'Cancel',
         onConfirmed: () {
-          Navigator.of(context).pop(true);  // return true from dialog
+          Navigator.of(context).pop(true); 
         },
       ),
     );
 
     if (result == true) {
       if (Platform.isAndroid) {
-        SystemNavigator.pop(); // Minimize/close app on Android
+        SystemNavigator.pop(); 
       } else if (Platform.isIOS) {
-        exit(0); // Force exit app on iOS (use with caution)
+        exit(0); 
       }
-      return true; // WillPopScope can also return true to allow
+      return true;
     }
 
-    return false; // Don't exit
+    return false; 
   }
   
   @override
@@ -146,18 +140,16 @@ class CustomBottomNavState extends State<CustomBottomNav> {
       child: Scaffold(
         body: Column(
           children: [
-            Appbar(),
             Expanded(
               child: PageView(
                 controller: _pageController,
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  // StudentHomePage(),
-                  // isShopPage ? ShopPage(discount: _shopPageDiscount!,) : SavedDiscountsScreen(),
-                  // AvailableDiscountsScreen(key: AppKeys.availableDiscountKey,),
-                  // _currentUser != null
-                  //   ? ProfileEditScreen(user: _currentUser!)
-                  //   : Center(child: CircularProgressIndicator()),
+                  HomeScreen(),
+                  InformScreen(),
+                  MapScreen(),
+                  ActionScreen(),
+                  ProfileScreen()
                 ],
               ),
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+
 class Appbar extends StatefulWidget {
   const Appbar({super.key});
-
   @override
   State<Appbar> createState() => _AppbarState();
 }
@@ -16,56 +16,96 @@ class _AppbarState extends State<Appbar> {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      width: screenWidth,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(screenWidth * 0.1),
-          bottomRight: Radius.circular(screenWidth * 0.1),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xff86B3E4).withOpacity(0.25),
-            spreadRadius: 0,
-            blurRadius: 19.6,
-            offset: Offset(0, 4), // changes position of shadow
-          ),
-        ]
-      ),
+    return SizedBox(
+      height: double.infinity,
       child: Padding(
-        padding: EdgeInsets.only(top: screenWidth * 0.165 , right: screenWidth * 0.05, left: screenWidth * 0.05 , bottom: screenWidth * 0.05),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Column(
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Hello ${"Venuka"}!',
-                  style: TextStyle(
-                    fontSize: screenWidth*0.09,
-                    fontWeight: FontWeight.bold,
-                    foreground: Paint()
-                      ..shader = LinearGradient(
-                        colors: <Color>[
-                          Color(0xff2D3C57),
-                          Color(0xff6282BD),
-                        ],
-                      ).createShader(
-                        Rect.fromLTWH(0.0, 0.0,300.0,0.0),
-                      ),
-                  ),
+            Container(
+              width: screenWidth,
+              height: screenWidth*0.6,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xff4338CA),
+                    Color(0xff211C64)
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter
                 ),
-                Text(
-                  'Weekend loading… plans ready?',
-                  style: TextStyle(
-                    fontSize: screenWidth*0.04,
-                    fontWeight: FontWeight.w300,
-                    color: Color(0xff7A7A7A),
-                  ),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12),
                 ),
-              ],
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xff006496).withOpacity(0.25),
+                    spreadRadius: 0,
+                    blurRadius: 4,
+                    offset: Offset(0, 4), // changes position of shadow
+                  ),
+                ]
+              ),
+              child: Padding(
+                padding: EdgeInsets.only(top: screenWidth * 0.165 , right: screenWidth * 0.05, left: screenWidth * 0.05 , bottom: screenWidth * 0.05),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              radius: screenWidth * 0.065,
+                              backgroundImage: NetworkImage(
+                                'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png'
+                              ),
+                            ),
+                            SizedBox(
+                              width: screenWidth*0.04,
+                            ),
+                            Text(
+                              'Hi, ${"Venuka"}!',
+                              style: TextStyle(
+                                fontSize: screenWidth*0.04,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white
+                              ),
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          child: Stack(
+                            children: [
+                              Icon(
+                                Icons.notifications,
+                                color: Colors.white,
+                                size: screenWidth * 0.07,
+                              ),
+                              Positioned(
+                                right: 0,
+                                top: 0,
+                                child: Container(
+                                  width: screenWidth * 0.03,
+                                  height: screenWidth * 0.03,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.red,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: screenWidth*0.125,
+                    )
+                  ],
+                ),
+              ),
             ),
           ],
         ),
