@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Poppins', // Set the default font family here
+        scaffoldBackgroundColor: Colors.white,
       ),
       home: CustomBottomNav()
     );
