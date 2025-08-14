@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Appbar extends StatefulWidget {
-  const Appbar({super.key});
+  final bool nameShow;
+  const Appbar({super.key, this.nameShow = false});
   @override
   State<Appbar> createState() => _AppbarState();
 }
@@ -24,7 +25,7 @@ class _AppbarState extends State<Appbar> {
           children: [
             Container(
               width: screenWidth,
-              height: screenWidth*0.6,
+              height: screenWidth*0.45,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
@@ -54,6 +55,8 @@ class _AppbarState extends State<Appbar> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        widget.nameShow ? 
+                        Spacer() :
                         Row(
                           children: [
                             CircleAvatar(
@@ -100,9 +103,6 @@ class _AppbarState extends State<Appbar> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: screenWidth*0.125,
-                    )
                   ],
                 ),
               ),

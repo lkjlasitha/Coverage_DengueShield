@@ -76,11 +76,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         children: [
           Appbar(),
           Positioned(
-            top: screenWidth * 0.35,
+            top: screenWidth * 0.325,
             left: screenWidth * 0.04,
             right: screenWidth * 0.04,
             child: SizedBox(
-              height: MediaQuery.of(context).size.height - (screenWidth * 0.35),
+              height: MediaQuery.of(context).size.height - (screenWidth * 0.325),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         ],
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
