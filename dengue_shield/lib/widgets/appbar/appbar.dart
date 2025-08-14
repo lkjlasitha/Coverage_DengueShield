@@ -24,7 +24,7 @@ class _AppbarState extends State<Appbar> {
           children: [
             Container(
               width: screenWidth,
-              height: screenWidth*0.6,
+              height: screenWidth*0.5,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
