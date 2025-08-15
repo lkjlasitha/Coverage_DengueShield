@@ -45,6 +45,14 @@ class CustomBottomNavState extends State<CustomBottomNav> {
     }
   }
 
+  void navigateTo(int index) {
+    if (_selectedIndex != index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
+
   Widget _buildNavItem(int index) {
     final isSelected = index == _selectedIndex;
     final screenWidth = MediaQuery.of(context).size.width;

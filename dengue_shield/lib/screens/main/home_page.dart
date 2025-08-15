@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'package:dengue_shield/config/theme.dart';
 import 'package:dengue_shield/widgets/button/button.dart';
-import 'package:dengue_shield/widgets/environment_data_widget/environment_data_widget.dart';
+import 'package:dengue_shield/widgets/home_page/environment_data_widget.dart';
+import 'package:dengue_shield/widgets/home_page/gif_container.dart';
 import 'package:flutter/material.dart';
+import '../../config/keys.dart';
 import '../../widgets/appbar/appbar.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -77,205 +79,228 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         children: [
           Appbar(),
           Positioned(
-            top: screenWidth * 0.325,
+            top: screenWidth * 0.35,
             left: screenWidth * 0.04,
             right: screenWidth * 0.04,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height - (screenWidth * 0.325),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.08),
-                            blurRadius: 12,
-                            offset: Offset(0, 4),
+            bottom: 0,
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 12,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Current Risk Level',
+                                style: TextStyle(
+                                    fontSize: screenWidth * 0.045,
+                                    fontWeight: FontWeight.w700,
+                                    height: 1),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
+                                decoration: BoxDecoration(
+                                    color: Color(0xffFBBC05).withOpacity(0.15),
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(
+                                        width: 1,
+                                        color: Color(0xffFBBC05).withOpacity(0.32))),
+                                child: Text(
+                                  'Medium',
+                                  style: TextStyle(
+                                    color: Color(0xffFBBC05),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.location_pin,
+                                color: Color(0xff818181),
+                                size: screenWidth * 0.04,
+                              ),
+                              Text(
+                                'Molabe',
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.grey[600], height: 1),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Text(
+                                '45/100',
+                                style: TextStyle(
+                                    fontSize: 32,
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.black87,
+                                    height: 1),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            'increasing in last 24h',
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xffFFA0A0),
+                                fontWeight: FontWeight.w400),
+                          ),
+                          SizedBox(height: 12),
+                          Container(
+                            height: 8,
+                            decoration: BoxDecoration(
+                                color: Color(0xffF5F5F5),
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: Offset(0.4, 0.5),
+                                      blurRadius: 1,
+                                      color: Colors.white.withOpacity(0.25))
+                                ]),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: LinearProgressIndicator(
+                                value: 0.60,
+                                backgroundColor: Color(0xffF5F5F5),
+                                color: Color(0xffEB4335),
+                                minHeight: 8,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Icon(
+                                Icons.access_time,
+                                size: 14,
+                              ),
+                              SizedBox(
+                                width: screenWidth * 0.015,
+                              ),
+                              Text(
+                                'updated 1hr ago',
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    color: Color(0xff7D848D),
+                                    height: 1),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12),
+                          Text(
+                            'Recommended Actions',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                                height: 1),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            '• Use Mosquito Repellent When Outdoors\n• Keep Surroundings',
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[700],
+                                height: 1.4),
                           ),
                         ],
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Current Risk Level',
-                                  style: TextStyle(
-                                      fontSize: screenWidth * 0.045,
-                                      fontWeight: FontWeight.w700,
-                                      height: 1),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-                                  decoration: BoxDecoration(
-                                      color: Color(0xffFBBC05).withOpacity(0.15),
-                                      borderRadius: BorderRadius.circular(15),
-                                      border: Border.all(
-                                          width: 1,
-                                          color: Color(0xffFBBC05).withOpacity(0.32))),
-                                  child: Text(
-                                    'Medium',
-                                    style: TextStyle(
-                                      color: Color(0xffFBBC05),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.location_pin,
-                                  color: Color(0xff818181),
-                                  size: screenWidth * 0.04,
-                                ),
-                                Text(
-                                  'Molabe',
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.grey[600], height: 1),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 12),
-                            Row(
-                              children: [
-                                Text(
-                                  '45/100',
-                                  style: TextStyle(
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w800,
-                                      color: Colors.black87,
-                                      height: 1),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              'increasing in last 24h',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xffFFA0A0),
-                                  fontWeight: FontWeight.w400),
-                            ),
-                            SizedBox(height: 12),
-                            Container(
-                              height: 8,
-                              decoration: BoxDecoration(
-                                  color: Color(0xffF5F5F5),
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        offset: Offset(0.4, 0.5),
-                                        blurRadius: 1,
-                                        color: Colors.white.withOpacity(0.25))
-                                  ]),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(4),
-                                child: LinearProgressIndicator(
-                                  value: 0.60,
-                                  backgroundColor: Color(0xffF5F5F5),
-                                  color: Color(0xffEB4335),
-                                  minHeight: 8,
-                                ),
-                              ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Icon(
-                                  Icons.access_time,
-                                  size: 14,
-                                ),
-                                SizedBox(
-                                  width: screenWidth * 0.015,
-                                ),
-                                Text(
-                                  'updated 1hr ago',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      color: Color(0xff7D848D),
-                                      height: 1),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 12),
-                            Text(
-                              'Recommended Actions',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                  height: 1),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              '• Use Mosquito Repellent When Outdoors\n• Keep Surroundings',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[700],
-                                  height: 1.4),
-                            ),
-                          ],
-                        ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: screenWidth * 0.06,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GifContainer(
+                        gifPath: "assets/gif/doc.gif", 
+                        content: "Cases Today"
                       ),
-                    ),
-                    SizedBox(
-                      height: screenWidth * 0.04,
-                    ),
-                    Text(
-                      "Today's Environmental Data",
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.045,
-                        fontWeight: FontWeight.w700,
+                      GifContainer(
+                        gifPath: "assets/gif/locate.gif", 
+                        content: "Location"
                       ),
+                      GifContainer(
+                        gifPath: "assets/gif/man.gif", 
+                        content: "Active Users"
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: screenWidth * 0.045,
+                  ),
+                  Text(
+                    "Today's Environmental Data",
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.045,
+                      fontWeight: FontWeight.w700,
                     ),
-                    SizedBox(
-                      height: screenWidth * 0.04,
-                    ),
-                    EnvironmentDataWidget(
-                        title: "Temperature",
-                        img_path: 'assets/icons/temp.png',
-                        value: "32 C"),
-                    EnvironmentDataWidget(
-                        title: "Rainfall",
-                        img_path: 'assets/icons/wether.png',
-                        value: "32 mm"),
-                    EnvironmentDataWidget(
-                        title: "New Cases",
-                        img_path: 'assets/icons/wave.png',
-                        value: "22"),
-                    SizedBox(
-                      height: screenWidth * 0.04,
-                    ),
-                    SharedButton(screenWidth: screenWidth*0.475, 
-                    content: Column(
-                      children: [
-                        Icon(
-                          Icons.circle,
-                          color: Colors.white,
-                        ),
-                        Text(
-                          'View Map',
-                          style: TextStyle(
-                            fontSize: screenWidth*0.04,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white
+                  ),
+                  SizedBox(
+                    height: screenWidth * 0.04,
+                  ),
+                  EnvironmentDataWidget(
+                      title: "Temperature",
+                      img_path: 'assets/icons/temp.png',
+                      value: "32 C"),
+                  EnvironmentDataWidget(
+                      title: "Rainfall",
+                      img_path: 'assets/icons/wether.png',
+                      value: "32 mm"),
+                  EnvironmentDataWidget(
+                      title: "New Cases",
+                      img_path: 'assets/icons/wave.png',
+                      value: "22"),
+                  SizedBox(
+                    height: screenWidth * 0.04,
+                  ),
+                  GestureDetector(
+                    onTap: () => AppKeys.bottomNavKey.currentState?.navigateTo(2),
+                    child: SharedButton(
+                      screenWidth: screenWidth*0.475, 
+                      content: Column(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            color: Colors.white,
                           ),
-                        )
-                      ],
-                     )
-                    )
-                  ],
-                ),
+                          Text(
+                            'View Map',
+                            style: TextStyle(
+                              fontSize: screenWidth*0.04,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white
+                            ),
+                          )
+                        ],
+                      )
+                    ),
+                  )
+                ],
               ),
             ),
           )

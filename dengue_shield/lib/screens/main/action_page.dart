@@ -100,74 +100,72 @@ class _ActionScreenState extends State<ActionScreen> {
             top: screenWidth * 0.35,
             left: screenWidth * 0.04,
             right: screenWidth * 0.04,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height - (screenWidth * 0.35),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Text(
-                      "What would you like to report?",
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.055,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
+            bottom: 0,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(
+                    "What would you like to report?",
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.055,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
                     ),
-                    SizedBox(height: screenWidth * 0.1),
-                    Text(
-                      "Help us fight mosquito-borne diseases by reporting \nbreeding sites or mosquito activity in your area. \nSelect the type of case below and submit \nyour report to alert our control teams.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.0325,
-                        fontWeight: FontWeight.w500,
-                        color: Color(0xff6B7280),
-                      ),
+                  ),
+                  SizedBox(height: screenWidth * 0.1),
+                  Text(
+                    "Help us fight mosquito-borne diseases by reporting \nbreeding sites or mosquito activity in your area. \nSelect the type of case below and submit \nyour report to alert our control teams.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.0325,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff6B7280),
                     ),
-                    SizedBox(height: screenWidth * 0.065),
-                    _container(
-                      Color(0xffEB4335).withOpacity(0.21),
-                      Color(0xffEB4335),
-                      "Breeding Sites",
-                      onTap: () {
-                        setState(() {
-                          showBreedingSitesContainer = !showBreedingSitesContainer;
-                        });
-                      },
-                      showArrowUp: showBreedingSitesContainer,
-                    ),
-                    if (showBreedingSitesContainer) _dottedContainer(context),
-                    SizedBox(height: screenWidth * 0.04),
-                    _container(
-                      Color(0xffDDDDDD),
-                      Color(0xff6B7280),
-                      "Mosquito Activity Reports",
-                      onTap: () {
-                        setState(() {
-                          showMosquitoReportsContainer = !showMosquitoReportsContainer;
-                        });
-                      },
-                      showArrowUp: showMosquitoReportsContainer,
-                    ),
-                    if (showMosquitoReportsContainer) _dottedContainer(context),
-                    SizedBox(height: screenWidth * 0.08),
-                    SharedButton(
-                      screenWidth: screenWidth,
-                      content: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            'Suspected Cases',
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.0425,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
+                  ),
+                  SizedBox(height: screenWidth * 0.065),
+                  _container(
+                    Color(0xffEB4335).withOpacity(0.21),
+                    Color(0xffEB4335),
+                    "Breeding Sites",
+                    onTap: () {
+                      setState(() {
+                        showBreedingSitesContainer = !showBreedingSitesContainer;
+                      });
+                    },
+                    showArrowUp: showBreedingSitesContainer,
+                  ),
+                  if (showBreedingSitesContainer) _dottedContainer(context),
+                  SizedBox(height: screenWidth * 0.04),
+                  _container(
+                    Color(0xffDDDDDD),
+                    Color(0xff6B7280),
+                    "Mosquito Activity Reports",
+                    onTap: () {
+                      setState(() {
+                        showMosquitoReportsContainer = !showMosquitoReportsContainer;
+                      });
+                    },
+                    showArrowUp: showMosquitoReportsContainer,
+                  ),
+                  if (showMosquitoReportsContainer) _dottedContainer(context),
+                  SizedBox(height: screenWidth * 0.08),
+                  SharedButton(
+                    screenWidth: screenWidth,
+                    content: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          'Suspected Cases',
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.0425,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

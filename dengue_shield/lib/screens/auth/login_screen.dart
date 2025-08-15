@@ -1,6 +1,7 @@
 import 'package:dengue_shield/config/theme.dart';
 import 'package:dengue_shield/widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import '../../config/keys.dart';
 import 'frogot_password.dart';
 import 'register_screen.dart';
 
@@ -99,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CustomBottomNav()),
+                        MaterialPageRoute(builder: (context) => CustomBottomNav(key: AppKeys.bottomNavKey)),
                       );
                     },
                     style: ElevatedButton.styleFrom(
