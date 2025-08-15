@@ -74,7 +74,7 @@ class _InformScreenState extends State<InformScreen> {
       debugPrint("Sending message: $message");
       // Replace with your actual API endpoint
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/ask'), // Example API http://10.0.2.2:3000
+        Uri.parse('http://16.171.60.189:8000/ask'),
         headers: {
           'Content-Type': 'application/json',
         },
