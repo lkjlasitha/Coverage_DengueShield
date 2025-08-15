@@ -11,7 +11,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:animations/animations.dart';
 import '../alret_dialog/alert_dialog.dart';
 
-
 class CustomBottomNav extends StatefulWidget {
   const CustomBottomNav({Key? key}) : super(key: key);
 

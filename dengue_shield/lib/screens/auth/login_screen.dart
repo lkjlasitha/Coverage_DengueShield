@@ -1,4 +1,5 @@
 import 'package:dengue_shield/config/theme.dart';
+import 'package:dengue_shield/widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'frogot_password.dart';
 import 'register_screen.dart';
@@ -24,11 +25,12 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Future<void> _login() async {
-  }
+  // Future<void> _login() async {
 
-  Future<void> _signInWithGoogle() async {
-  }
+  // }
+
+  // Future<void> _signInWithGoogle() async {
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +95,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: _isLoading ? null : _login,
+                    //onPressed: _isLoading ? null : _login,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CustomBottomNav()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: mainColor,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

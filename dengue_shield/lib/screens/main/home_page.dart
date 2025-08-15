@@ -42,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     });
   }
 
-  Widget _buildRadialFab(IconData icon, Color color, double angle, double distance, VoidCallback onTap) {
+  Widget _buildRadialFab(IconData icon, Color color, double angle, double distance, VoidCallback onTap, String heroTag) {
     final double rad = angle * pi / 180;
     return AnimatedBuilder(
       animation: _fabController,
@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           child: Opacity(
             opacity: progress,
             child: FloatingActionButton(
+              heroTag: heroTag, // ADD THIS LINE
               mini: true,
               onPressed: onTap,
               backgroundColor: Colors.white,
@@ -284,13 +285,14 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       floatingActionButton: Stack(
         alignment: Alignment.bottomRight,
         children: [
-          _buildRadialFab(Icons.warning, Colors.redAccent, 90, -80, () => debugPrint("Alert clicked")),
-          _buildRadialFab(Icons.image, Colors.indigoAccent, 140, -80, () => debugPrint("Gallery clicked")),
-          _buildRadialFab(Icons.cloud, Colors.deepPurple, 185, -80, () => debugPrint("Cloud clicked")),
+          _buildRadialFab(Icons.warning, Colors.redAccent, 90, -80, () => debugPrint("Alert clicked"), "alert_fab"),
+          _buildRadialFab(Icons.image, Colors.indigoAccent, 140, -80, () => debugPrint("Gallery clicked"), "gallery_fab"),
+          _buildRadialFab(Icons.cloud, Colors.deepPurple, 185, -80, () => debugPrint("Cloud clicked"), "cloud_fab"),
           Positioned(
             bottom: 16,
             right: 16,
             child: FloatingActionButton(
+              heroTag: "home_fab", // This was already correct
               backgroundColor: mainColor,
               shape: const CircleBorder(),
               onPressed: _toggleFabMenu,
