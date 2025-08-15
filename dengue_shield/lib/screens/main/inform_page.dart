@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert';
 
 class InformScreen extends StatefulWidget {
@@ -15,19 +16,31 @@ class InformScreen extends StatefulWidget {
 class _InformScreenState extends State<InformScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _chatScrollController = ScrollController();
+  final FocusNode _textFieldFocusNode = FocusNode();
   List<Map<String, dynamic>> _messages = [];
   bool _isLoading = false;
+  bool _isTextFieldFocused = false;
 
   @override
   void initState() {
     super.initState();
     _loadChatHistory();
+    _textFieldFocusNode.addListener(() {
+      setState(() {
+        _isTextFieldFocused = _textFieldFocusNode.hasFocus;
+      });
+      // Scroll to bottom when text field is focused
+      if (_textFieldFocusNode.hasFocus) {
+        _scrollToBottomDelayed();
+      }
+    });
   }
 
   @override
   void dispose() {
     _messageController.dispose();
     _chatScrollController.dispose();
+    _textFieldFocusNode.dispose();
     super.dispose();
   }
 
@@ -146,6 +159,21 @@ class _InformScreenState extends State<InformScreen> {
       }
     });
   }
+
+  void _scrollToBottomDelayed() {
+    // Add a slight delay to ensure the UI has updated after focus change
+    Future.delayed(Duration(milliseconds: 300), () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_chatScrollController.hasClients) {
+          _chatScrollController.animateTo(
+            _chatScrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        }
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -166,6 +194,7 @@ class _InformScreenState extends State<InformScreen> {
                   children: [
                     // Emergency Medical Help Card
                     Container(
+                      height:150,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(18),
                         color: Colors.white,
@@ -179,54 +208,62 @@ class _InformScreenState extends State<InformScreen> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(20),
-                        child: Row(
+                        child: Stack(
                           children: [
-                            Container(
-                              width: 4,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                            SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Need Medical Help Fast?',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black87,
-                                    ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 4,
+                                  height: 170,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(2),
                                   ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    'Call 1919 for the Government\nAmbulance Service',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey[600],
-                                      height: 1.3,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                // Handle call action
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Need Medical Help Fast?',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        'Call 1919 for the Government\nAmbulance Service',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[600],
+                                          height: 1.3,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Handle call action
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                ),
+                                child: Text('Call Now'),
                               ),
-                              child: Text('Call Now'),
                             ),
                           ],
                         ),
@@ -396,10 +433,10 @@ class _InformScreenState extends State<InformScreen> {
                             child: Row(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.all(8),
+                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                   decoration: BoxDecoration(
                                     color: Colors.blue.shade600,
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(25),
                                   ),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -413,15 +450,12 @@ class _InformScreenState extends State<InformScreen> {
                                         ),
                                       ),
                                       SizedBox(width: 8),
-                                      Container(
-                                        padding: EdgeInsets.all(4),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Text(
-                                          '😊',
-                                          style: TextStyle(fontSize: 16),
+                                      Transform.translate(
+                                        offset: Offset(8, 0),
+                                        child: Image.asset(
+                                          'assets/icons/image.png',
+                                          width: 40,
+                                          height: 40,
                                         ),
                                       ),
                                     ],
@@ -459,7 +493,7 @@ class _InformScreenState extends State<InformScreen> {
 
                           // Chat messages
                           Container(
-                            height: 300,
+                            height: _isTextFieldFocused ? 500 : 300,
                             child: Column(
                               children: [
                                 // Messages list
@@ -584,6 +618,7 @@ class _InformScreenState extends State<InformScreen> {
                                       Expanded(
                                         child: TextField(
                                           controller: _messageController,
+                                          focusNode: _textFieldFocusNode,
                                           decoration: InputDecoration(
                                             hintText: 'What are the early warning signs of dengue fever?',
                                             hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
