@@ -1,7 +1,9 @@
+import 'package:dengue_shield/screens/onboard/splash_screen.dart';
 import 'package:dengue_shield/widgets/appbar/appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/secure_storage_service/secure_storage.dart';
 import '../../widgets/alret_dialog/alert_dialog.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -238,6 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future _logout(BuildContext context) async {
+   final storage = SecureStorageService();
    await showDialog<bool>(
       context: context,
       builder: (context) => ConfirmationDialog(
@@ -246,6 +249,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         confirmText: 'OK',
         cancelText: 'Cancel',
         onConfirmed: () {
+          storage.clearAllData();
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const SplashScreen()),
+            (route) => false,
+          );
         },
       ),
     );

@@ -1,63 +1,25 @@
 import 'package:dengue_shield/config/theme.dart';
+import 'package:dengue_shield/services/message_service/message_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:math';
+import '../../models/appointment/appointment/appointments.dart';
+import '../../models/appointment/history_appointments/HistoryAppointment .dart';
+import '../../services/appointment_service/appointment_api_service.dart';
 
-class MosquitoTestFlowScreen extends StatefulWidget {
-  const MosquitoTestFlowScreen({Key? key}) : super(key: key);
+class AppointmentScreen extends StatefulWidget {
+  const AppointmentScreen({Key? key}) : super(key: key);
 
   @override
-  State<MosquitoTestFlowScreen> createState() => _MosquitoTestFlowScreenState();
+  State<AppointmentScreen> createState() => _AppointmentScreenState();
 }
 
 enum PageState { selectType, selectTest, selectHospital, bookAppointment, appointmentDetails }
 
-class AppointmentData {
-  final String referenceCode;
-  final String patientName;
-  final String testType;
-  final String hospital;
-  final DateTime date;
-  final String time;
-  final List<String> documents;
-  final String qrData;
-
-  AppointmentData({
-    required this.referenceCode,
-    required this.patientName,
-    required this.testType,
-    required this.hospital,
-    required this.date,
-    required this.time,
-    required this.documents,
-    required this.qrData,
-  });
-}
-
-class HistoryAppointment {
-  final String referenceCode;
-  final String patientName;
-  final String testType;
-  final String hospital;
-  final DateTime date;
-  final String time;
-  final String status;
-
-  HistoryAppointment({
-    required this.referenceCode,
-    required this.patientName,
-    required this.testType,
-    required this.hospital,
-    required this.date,
-    required this.time,
-    required this.status,
-  });
-}
-
-class _MosquitoTestFlowScreenState extends State<MosquitoTestFlowScreen> {
+class _AppointmentScreenState extends State<AppointmentScreen> {
   PageState _page = PageState.selectType;
   String? _selectedType;
   String? _selectedTypeLocal;
@@ -70,37 +32,8 @@ class _MosquitoTestFlowScreenState extends State<MosquitoTestFlowScreen> {
   AppointmentData? _appointmentData;
   int _selectedNavIndex = 0;
   bool _showHistory = false;
-
-  // Hardcoded history data
-  final List<HistoryAppointment> _historyAppointments = [
-    HistoryAppointment(
-      referenceCode: 'A1B2C3D4',
-      patientName: 'Venuka Harshana',
-      testType: 'NS1 Antigen',
-      hospital: 'General Hospital',
-      date: DateTime(2024, 11, 5),
-      time: '09:00 - 12:00',
-      status: 'Completed',
-    ),
-    HistoryAppointment(
-      referenceCode: 'E5F6G7H8',
-      patientName: 'Venuka Harshana',
-      testType: 'Full Blood Count',
-      hospital: 'City Hospital',
-      date: DateTime(2024, 10, 20),
-      time: '12:00 - 15:00',
-      status: 'Completed',
-    ),
-    HistoryAppointment(
-      referenceCode: 'I9J0K1L2',
-      patientName: 'Venuka Harshana',
-      testType: 'PCR Test',
-      hospital: 'Medical Center',
-      date: DateTime(2024, 10, 15),
-      time: '15:00 - 18:00',
-      status: 'Cancelled',
-    ),
-  ];
+  bool _isLoadingHistory = false;
+  List<HistoryAppointment> _apiHistoryAppointments = [];
 
   final List<String> hospitals = [
     'Hospital 1',
@@ -153,22 +86,56 @@ class _MosquitoTestFlowScreenState extends State<MosquitoTestFlowScreen> {
     return 'REF:$referenceCode|TEST:$_selectedTest|HOSPITAL:$_selectedHospital|DATE:${DateFormat('dd/MM/yyyy').format(_selectedDate)}|TIME:$_selectedTime';
   }
 
-  void _bookAppointment() {
+  void _bookAppointment() async {
     final referenceCode = _generateReferenceCode();
-    final qrData = _generateQRData(referenceCode);
+    final formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDate);
+    final timeForApi = _selectedTime!.split(' - ')[0]; // Gets "09:00" from "09:00 - 12:00"
     
-    _appointmentData = AppointmentData(
-      referenceCode: referenceCode,
-      patientName: 'Venuka Harshana',
-      testType: _selectedTest!,
-      hospital: _selectedHospital!,
-      date: _selectedDate,
-      time: _selectedTime!,
-      documents: _selectedFiles?.map((f) => f.name).toList() ?? [],
-      qrData: qrData,
+    final result = await AppointmentApiService.bookAppointment(
+      hospitalName: _selectedHospital!,
+      date: formattedDate,
+      time: timeForApi,
+      category: _selectedTest!,
+      referenceNum: referenceCode,
+      pdf: true,
+      context: context
     );
+    
+    if (result != null) {
+      final qrData = _generateQRData(referenceCode);
+      
+      _appointmentData = AppointmentData(
+        referenceCode: referenceCode,
+        patientName: 'Venuka Harshana',
+        testType: _selectedTest!,
+        hospital: _selectedHospital!,
+        date: _selectedDate,
+        time: _selectedTime!,
+        documents: _selectedFiles?.map((f) => f.name).toList() ?? [],
+        qrData: qrData,
+      );
 
-    _showAppointmentConfirmationDialog();
+      _showAppointmentConfirmationDialog();
+    } else {
+      MessageUtils.showApiErrorMessage(context, 'Failed to book appointment. Please try again.');
+    }
+  }
+
+  Future<void> _loadAppointmentHistory() async {
+    if (_isLoadingHistory) return;
+    
+    setState(() {
+      _isLoadingHistory = true;
+    });
+
+    final appointments = await AppointmentApiService.getAppointmentHistory(context);
+    
+    setState(() {
+      _isLoadingHistory = false;
+      if (appointments != null) {
+        _apiHistoryAppointments = appointments;
+      }
+    });
   }
 
   void _showAppointmentConfirmationDialog() {
@@ -245,11 +212,12 @@ class _MosquitoTestFlowScreenState extends State<MosquitoTestFlowScreen> {
     setState(() {
       _selectedNavIndex = index;
       if (index == 0) {
-        // Home - show current flow
         _showHistory = false;
       } else if (index == 1) {
-        // History - show history page
         _showHistory = true;
+        if (_apiHistoryAppointments.isEmpty) {
+          _loadAppointmentHistory();
+        }
       }
     });
   }
@@ -352,7 +320,6 @@ class _MosquitoTestFlowScreenState extends State<MosquitoTestFlowScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 22.0, vertical: 10),
       child: Column(
         children: [
-          // Header
           const SizedBox(height: 10),
           const Text(
             'History',
@@ -364,66 +331,35 @@ class _MosquitoTestFlowScreenState extends State<MosquitoTestFlowScreen> {
           ),
           const SizedBox(height: 6),
           const Text(
-            'View your past appointments &\ntest reports',
+            'View your past appointments &\ntest records',
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: 20),
-          
-          // History content
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Appointments section
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Appointments',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 15),
+                      if (_isLoadingHistory)
+                        const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
                           ),
-                        ),
-                        const SizedBox(height: 15),
-                        ..._historyAppointments.map((appointment) => _buildHistoryAppointmentCard(appointment)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  
-                  // Results Summary section
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Results Summary',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        )
+                      else if (_apiHistoryAppointments.isEmpty)
+                        const Center(
+                          child: Text(
+                            'No appointments found',
+                            style: TextStyle(color: Colors.grey),
                           ),
-                        ),
-                        const SizedBox(height: 15),
-                        _buildResultSummaryCard('Dengue - Negative', '12/10/2024', 'General Hospital', 'Full Blood Count', '09:00 - 12:00'),
-                        _buildResultSummaryCard('Malaria - Negative', '28/09/2024', 'City Hospital', 'Blood Smear', '14:00 - 17:00'),
-                        _buildResultSummaryCard('Dengue - Positive', '15/09/2024', 'Medical Center', 'NS1 Antigen', '10:00 - 13:00'),
-                      ],
-                    ),
+                        )
+                      else
+                        ..._apiHistoryAppointments.map((appointment) => _buildHistoryAppointmentCard(appointment)),
+                    ],
                   ),
                   const SizedBox(height: 20),
                 ],
@@ -437,62 +373,121 @@ class _MosquitoTestFlowScreenState extends State<MosquitoTestFlowScreen> {
 
   Widget _buildHistoryAppointmentCard(HistoryAppointment appointment) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 26 , vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[200]!),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: Row(
+      child: Column(
         children: [
-          Icon(
-            Icons.calendar_today,
-            color: mainColor,
-            size: 20,
+          SizedBox(
+            height: 10,
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  DateFormat('dd/MM/yyyy').format(appointment.date),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
+          Row(
+            children: [
+              Icon(
+                Icons.calendar_today_outlined,
+                color: Colors.grey[600],
+                size: 18,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                DateFormat('dd/MM/yyyy').format(appointment.date),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: Colors.black87,
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  '${appointment.testType} - ${appointment.hospital}',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12,
-                  ),
-                ),
-                Text(
-                  appointment.time,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: appointment.status == 'Completed' ? Colors.green[100] : Colors.red[100],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              appointment.status,
-              style: TextStyle(
-                color: appointment.status == 'Completed' ? Colors.green[800] : Colors.red[800],
-                fontSize: 10,
-                fontWeight: FontWeight.w500,
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Icon(
+                Icons.local_hospital_outlined,
+                color: Colors.grey[600],
+                size: 18,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                appointment.hospital,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  color: Colors.black87,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Icon(
+                Icons.science_outlined,
+                color: Colors.grey[600],
+                size: 18,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                appointment.testType,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  color: Colors.black87,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Icon(
+                Icons.access_time_outlined,
+                color: Colors.grey[600],
+                size: 18,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                appointment.time,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 15,
+                  color: Colors.black87,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton(
+              onPressed: () {
+                _showAppointmentDetailsDialog(appointment);
+              },
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(color: mainColor, width: 1.5),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+              child: Text(
+                'View Details',
+                style: TextStyle(
+                  color: mainColor,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),
@@ -501,64 +496,196 @@ class _MosquitoTestFlowScreenState extends State<MosquitoTestFlowScreen> {
     );
   }
 
-  Widget _buildResultSummaryCard(String result, String date, String hospital, String test, String time) {
-    final isPositive = result.contains('Positive');
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.description,
-            color: mainColor,
-            size: 20,
-          ),
-          const SizedBox(width: 12),
-          Expanded(
+  void _showAppointmentDetailsDialog(HistoryAppointment appointment) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          child: Container(
+            width: MediaQuery.of(context).size.width*0.9,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.6),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  offset: Offset(0, 16),
+                  blurRadius: 100,
+                  color: Colors.black.withOpacity(0.25)
+                ),
+                BoxShadow(
+                  offset: Offset(0, 16),
+                  blurRadius: 100,
+                  color: Colors.black.withOpacity(0.25)
+                )
+              ]
+            ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  result,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.of(context).pop(),
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const Text(
+                  'Appointment Overview',
                   style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: isPositive ? Colors.red[700] : Colors.green[700],
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 4),
                 Text(
-                  '$test - $hospital',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12,
+                  appointment.patientName,
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
-                Text(
-                  '$date, $time',
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12,
+                const SizedBox(height: 24),
+                
+                // Appointment details
+                _buildDetailRow(
+                  Icons.calendar_today_outlined,
+                  DateFormat('dd/MM/yyyy').format(appointment.date),
+                ),
+                const SizedBox(height: 16),
+                
+                _buildDetailRow(
+                  Icons.local_hospital_outlined,
+                  appointment.hospital,
+                ),
+                const SizedBox(height: 16),
+                
+                _buildDetailRow(
+                  Icons.science_outlined,
+                  appointment.testType,
+                ),
+                const SizedBox(height: 16),
+                
+                _buildDetailRow(
+                  Icons.access_time_outlined,
+                  appointment.time,
+                ),
+                const SizedBox(height: 32),
+                Column(
+                  children: [
+                    const Text(
+                      'Results Summary',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Platelet Count: 150,000 (Normal)',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Status: ',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 14,
+                          ),
+                        ),
+                        Text(
+                          'Negative',
+                          style: TextStyle(
+                            color: Colors.green[700],
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      'Documents: Yes (link)',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('PDF saved successfully'),
+                        ),
+                      );
+                    },
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: mainColor, width: 1.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                    ),
+                    child: Text(
+                      'Save as PDF',
+                      style: TextStyle(
+                        color: mainColor,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-          IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('View full report')),
-              );
-            },
-            icon: Icon(
-              Icons.visibility,
-              color: Colors.grey[600],
-              size: 18,
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailRow(IconData icon, String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: mainColor,
+            size: 18,
+          ),
+          const SizedBox(width: 12),
+          Text(
+            text,
+            style: TextStyle(
+              color: mainColor,
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
@@ -931,7 +1058,6 @@ class _MosquitoTestFlowScreenState extends State<MosquitoTestFlowScreen> {
               SizedBox(
                 height: 30,
               ),
-              // QR Code Section
               Center(
                 child: Column(
                   children: [

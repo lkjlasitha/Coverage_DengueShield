@@ -1,7 +1,7 @@
+import 'package:dengue_shield/screens/language_select/language_select.dart';
+import 'package:dengue_shield/screens/onboard/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-import 'screens/apointment_screen/apointment.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins', // Set the default font family here
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: MosquitoTestFlowScreen()
+      home: LanguageSelectionScreen()
     );
   }
 }

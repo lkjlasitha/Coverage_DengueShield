@@ -1,6 +1,5 @@
+import 'package:dengue_shield/services/wrapper/wrapper.dart';
 import 'package:flutter/material.dart';
-
-import 'onboard_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -76,7 +75,7 @@ class _SplashScreenState extends State<SplashScreen>
     _ctrl.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(const Duration(milliseconds: 500), () {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => OnboardingScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => AppWrapper()));
         });
       }
     });

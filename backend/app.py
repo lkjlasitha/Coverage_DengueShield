@@ -38,7 +38,7 @@ def verify_jwt(token):
     except:
         return None
 
-def generate_jwt(payload, minutes=60):
+def generate_jwt(payload, minutes=1440):
     payload['exp'] = datetime.utcnow() + timedelta(minutes=minutes)
     return jwt.encode(payload, config.JWT_SECRET, algorithm="HS256")
 
@@ -116,4 +116,4 @@ def get_appointments():
     return jsonify([a.to_dict() for a in appointments]), 200
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0', port=5000)

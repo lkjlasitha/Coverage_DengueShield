@@ -1,4 +1,5 @@
 import 'package:dengue_shield/config/theme.dart';
+import 'package:dengue_shield/screens/onboard/second_onboard_screen.dart';
 import 'package:flutter/material.dart';
 import '../../services/auth_services/register_service.dart';
 import '../../services/message_service/message_service.dart';
@@ -44,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Future.delayed(const Duration(seconds: 1), () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
+          MaterialPageRoute(builder: (context) => SecondOnboardScreen()),
         );
       });
     } catch (e) {
@@ -54,7 +55,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (mounted) setState(() => _isLoading = false);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
