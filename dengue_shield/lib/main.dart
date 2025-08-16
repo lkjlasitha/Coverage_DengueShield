@@ -1,5 +1,5 @@
+import 'package:dengue_shield/screens/onboard/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins', // Set the default font family here
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: CustomBottomNav()
+      home: SplashScreen()
     );
   }
 }

@@ -264,154 +264,152 @@ class _ProfileScreenState extends State<ProfileScreen> {
             top: isClicked ? screenWidth * 0.35 : screenWidth * 0.3 ,
             left: screenWidth * 0.04,
             right: screenWidth * 0.04,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height - (screenWidth * 0.325),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    !isClicked ?
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.08),
-                            blurRadius: 12,
-                            offset: Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    CircleAvatar(
-                                    radius: screenWidth * 0.1,
-                                    backgroundImage: NetworkImage(
-                                      'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png'
-                                    ),
-                                                                  ),
-                                                                  SizedBox(
-                                    width: screenWidth*0.02,
-                                                                  ),
-                                                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Venuka Rasanjith',
-                                        style: TextStyle(
-                                          fontSize: screenWidth*0.05,
-                                          fontWeight: FontWeight.w500,
-                                           height: 1
-                                        ),
-                                      ),
-                                      Text(
-                                        'venuka123@gmail.com',
-                                        style: TextStyle(
-                                          fontSize: screenWidth*0.035,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xff9C9C9C),
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.location_pin,
-                                            color: Color(0xff898989),
-                                            size: screenWidth * 0.04,
-                                          ),
-                                          Text(
-                                            'Molabe',
-                                            style: TextStyle(
-                                                fontSize: 14, color: Color(0xff898989), height: 1),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                   ),
-                                  ],
-                                ),
-                              Image.asset(
-                                'assets/icons/tier.png'
-                              )
-                             ],
-                            ),
-                            SizedBox(
-                              height: screenWidth*0.04,
-                            ),
-                            Container(
-                              height: 8,
-                              decoration: BoxDecoration(
-                                  color: Color(0xffF5F5F5),
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        offset: Offset(0.4, 0.5),
-                                        blurRadius: 1,
-                                        color: Colors.white.withOpacity(0.25))
-                                  ]),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(4),
-                                child: LinearProgressIndicator(
-                                  value: 0.60,
-                                  backgroundColor: Color(0xffF5F5F5),
-                                  color: Color(0xffFBBC05),
-                                  minHeight: 8,
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                '232 Gradient Points',
-                                style: TextStyle(
-                                    fontSize: 10,
-                                    color: Color(0xff7D848D),),
-                              ),
-                            ),
-                            SizedBox(
-                              height: screenWidth*0.01,
-                            )
-                          ],
-                        ),
-                      ),
-                    ) : Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          "Settings",
-                          style: TextStyle(
-                            fontSize: screenWidth * 0.055,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Text(
-                          "Version 0.1",
-                          style: TextStyle(
-                            fontSize: screenWidth * 0.03,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white.withOpacity(0.6),
-                          ),
+            bottom: 0,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  !isClicked ?
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 12,
+                          offset: Offset(0, 4),
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: screenWidth*0.06,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  CircleAvatar(
+                                  radius: screenWidth * 0.1,
+                                  backgroundImage: NetworkImage(
+                                    'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png'
+                                  ),
+                                                                ),
+                                                                SizedBox(
+                                  width: screenWidth*0.02,
+                                                                ),
+                                                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Venuka Rasanjith',
+                                      style: TextStyle(
+                                        fontSize: screenWidth*0.05,
+                                        fontWeight: FontWeight.w500,
+                                         height: 1
+                                      ),
+                                    ),
+                                    Text(
+                                      'venuka123@gmail.com',
+                                      style: TextStyle(
+                                        fontSize: screenWidth*0.035,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color(0xff9C9C9C),
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.location_pin,
+                                          color: Color(0xff898989),
+                                          size: screenWidth * 0.04,
+                                        ),
+                                        Text(
+                                          'Molabe',
+                                          style: TextStyle(
+                                              fontSize: 14, color: Color(0xff898989), height: 1),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                 ),
+                                ],
+                              ),
+                            Image.asset(
+                              'assets/icons/tier.png'
+                            )
+                           ],
+                          ),
+                          SizedBox(
+                            height: screenWidth*0.04,
+                          ),
+                          Container(
+                            height: 8,
+                            decoration: BoxDecoration(
+                                color: Color(0xffF5F5F5),
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: Offset(0.4, 0.5),
+                                      blurRadius: 1,
+                                      color: Colors.white.withOpacity(0.25))
+                                ]),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(4),
+                              child: LinearProgressIndicator(
+                                value: 0.60,
+                                backgroundColor: Color(0xffF5F5F5),
+                                color: Color(0xffFBBC05),
+                                minHeight: 8,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              '232 Gradient Points',
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color(0xff7D848D),),
+                            ),
+                          ),
+                          SizedBox(
+                            height: screenWidth*0.01,
+                          )
+                        ],
+                      ),
                     ),
-                    isClicked ? _settingContent() : _profileContents()
-                  ],
-                ),
+                  ) : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        "Settings",
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.055,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text(
+                        "Version 0.1",
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.03,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white.withOpacity(0.6),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: screenWidth*0.06,
+                  ),
+                  isClicked ? _settingContent() : _profileContents()
+                ],
               ),
             ),
           )

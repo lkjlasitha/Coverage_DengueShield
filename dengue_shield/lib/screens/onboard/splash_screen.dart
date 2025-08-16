@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'onboard_screen.dart';
+
 class SplashScreen extends StatefulWidget {
-  final VoidCallback? onFinish;
-  const SplashScreen({Key? key, this.onFinish}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -75,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen>
     _ctrl.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(const Duration(milliseconds: 500), () {
-          widget.onFinish?.call();
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => OnboardingScreen()));
         });
       }
     });
