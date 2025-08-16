@@ -1,4 +1,3 @@
-import 'package:dengue_shield/screens/language_select/language_select.dart';
 import 'package:dengue_shield/screens/onboard/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins', // Set the default font family here
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: LanguageSelectionScreen()
+      home: SplashScreen()
     );
   }
 }

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert';
 
 class InformScreen extends StatefulWidget {
@@ -175,6 +174,7 @@ class _InformScreenState extends State<InformScreen> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -195,7 +195,7 @@ class _InformScreenState extends State<InformScreen> {
                   children: [
                     // Emergency Medical Help Card
                     Container(
-                      height:150,
+                      height: 150,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(18),
                         color: Colors.white,
@@ -265,384 +265,341 @@ class _InformScreenState extends State<InformScreen> {
                                 ),
                                 child: Text('Call Now'),
                               ),
-
                             ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    
+                    // Dengue Symptoms Card
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 12,
+                            offset: Offset(0, 4),
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Handle call action
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Dengue Symptoms',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black87,
                               ),
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                             ),
-                            child: Text('Call Now'),
+                            SizedBox(height: 16),
+                            InkWell(
+                              onTap: () {
+                                // Navigate to symptoms details
+                              },
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue.shade50,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Icon(
+                                      Icons.medical_services_outlined,
+                                      color: Colors.blue,
+                                      size: 24,
+                                    ),
+                                  ),
+                                  SizedBox(width: 16),
+                                  Expanded(
+                                    child: Text(
+                                      'Know the Signs',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Colors.grey,
+                                    size: 16,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+              
+                    // Dengue Prevention Guide Card with Chat
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 12,
+                            offset: Offset(0, 4),
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-            
-                  // Dengue Symptoms Card
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
-                          blurRadius: 12,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Dengue Symptoms',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black87,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Dengue Prevention Guide',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black87,
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 16),
-                          InkWell(
-                            onTap: () {
-                              // Navigate to symptoms details
-                            },
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.shade50,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Icon(
-                                    Icons.medical_services_outlined,
-                                    color: Colors.blue,
-                                    size: 24,
-                                  ),
-                                ),
-                                SizedBox(width: 16),
-                                Expanded(
-                                  child: Text(
-                                    'Know the Signs',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black87,
+                            SizedBox(height: 16),
+                            InkWell(
+                              onTap: () {
+                                // Navigate to prevention guide
+                              },
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue.shade600,
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'Ask Den X',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        Transform.translate(
+                                          offset: Offset(8, 0),
+                                          child: Image.asset(
+                                            'assets/icons/image.png',
+                                            width: 40,
+                                            height: 40,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.grey,
-                                  size: 16,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-            
-                  // Dengue Prevention Guide Card
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
-                          blurRadius: 12,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Dengue Prevention Guide',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black87,
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          InkWell(
-                            onTap: () {
-                              // Navigate to prevention guide
-                            },
-                            child: Row(
-                              children: [
-                                Container(
-
-                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.shade600,
-                                    borderRadius: BorderRadius.circular(25),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        'Ask Den X',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 16,
-                                        ),
+                                  SizedBox(width: 16),
+                                  Expanded(
+                                    child: Text(
+                                      'Smart Dengue Prevention',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
                                       ),
-                                      SizedBox(width: 8),
-                                      Transform.translate(
-                                        offset: Offset(8, 0),
-                                        child: Image.asset(
-                                          'assets/icons/image.png',
-                                          width: 40,
-                                          height: 40,
-                                        ),
-                                      ),
-                                    ],
-
-                                  ),
-                                ),
-                                SizedBox(width: 16),
-                                Expanded(
-                                  child: Text(
-                                    'Smart Dengue Prevention',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black87,
                                     ),
                                   ),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: Colors.grey,
-                                  size: 16,
-                                ),
-                              ],
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Colors.grey,
+                                    size: 16,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                            SizedBox(height: 20),
 
-
-                          // Chat messages
-                          Container(
-                            height: _isTextFieldFocused ? 500 : 300,
-                            child: Column(
-                              children: [
-                                // Messages list
-                                Expanded(
-                                  child: _messages.isEmpty
-                                      ? Center(
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                'Hi! How can I help you',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.grey[600],
-                                                ),
-
-                                              ),
-                                            ),
-                                            SizedBox(height: 4),
-                                            Text(
-                                              '1:21 pm',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.grey[400],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    : ListView.builder(
-                                        controller: _chatScrollController,
-                                        padding: EdgeInsets.symmetric(horizontal: 16),
-                                        itemCount: _messages.length,
-                                        itemBuilder: (context, index) {
-                                          final message = _messages[index];
-                                          final isUser = message['isUser'] as bool;
-                                          return Align(
-                                            alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-                                            child: Container(
-                                              margin: EdgeInsets.symmetric(vertical: 4),
-                                              padding: EdgeInsets.all(12),
-                                              decoration: BoxDecoration(
-                                                color: isUser ? Colors.blue.shade600 : Colors.grey.shade100,
-                                                borderRadius: BorderRadius.circular(16),
-                                              ),
-                                              constraints: BoxConstraints(
-                                                maxWidth: screenWidth * 0.7,
-                                              ),
-                                              child: isUser 
-                                                ? Text(
-                                                    message['text'] as String,
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 14,
-                                                    ),
-                                                  )
-                                                : MarkdownBody(
-                                                    data: message['text'] as String,
-                                                    styleSheet: MarkdownStyleSheet(
-                                                      p: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontSize: 14,
-                                                        height: 1.4,
-                                                      ),
-                                                      strong: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                      listBullet: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontSize: 14,
-                                                      ),
-                                                      h1: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                      h2: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontSize: 15,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                      h3: TextStyle(
-                                                        color: Colors.black87,
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                    ),
+                            // Chat messages
+                            Container(
+                              height: _isTextFieldFocused ? 500 : 300,
+                              child: Column(
+                                children: [
+                                  // Messages list
+                                  Expanded(
+                                    child: _messages.isEmpty
+                                        ? Center(
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  'Hi! How can I help you',
+                                                  style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.grey[600],
                                                   ),
+                                                ),
+                                                SizedBox(height: 4),
+                                                Text(
+                                                  '1:21 pm',
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.grey[400],
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          );
-                                        },
-                                      ),
-                              ),
-                              
-                              // Loading indicator
-                              if (_isLoading)
-                                Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Row(
-                                    children: [
-
-                                      Expanded(
-                                        child: TextField(
-                                          controller: _messageController,
-                                          focusNode: _textFieldFocusNode,
-                                          decoration: InputDecoration(
-                                            hintText: 'What are the early warning signs of dengue fever?',
-                                            hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(25),
-                                              borderSide: BorderSide(color: Colors.grey.shade300),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(25),
-                                              borderSide: BorderSide(color: Colors.grey.shade300),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(25),
-                                              borderSide: BorderSide(color: Colors.blue.shade600),
-                                            ),
-                                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                          )
+                                        : ListView.builder(
+                                            controller: _chatScrollController,
+                                            padding: EdgeInsets.symmetric(horizontal: 16),
+                                            itemCount: _messages.length,
+                                            itemBuilder: (context, index) {
+                                              final message = _messages[index];
+                                              final isUser = message['isUser'] as bool;
+                                              return Align(
+                                                alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+                                                child: Container(
+                                                  margin: EdgeInsets.symmetric(vertical: 4),
+                                                  padding: EdgeInsets.all(12),
+                                                  decoration: BoxDecoration(
+                                                    color: isUser ? Colors.blue.shade600 : Colors.grey.shade100,
+                                                    borderRadius: BorderRadius.circular(16),
+                                                  ),
+                                                  constraints: BoxConstraints(
+                                                    maxWidth: screenWidth * 0.7,
+                                                  ),
+                                                  child: isUser 
+                                                    ? Text(
+                                                        message['text'] as String,
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 14,
+                                                        ),
+                                                      )
+                                                    : MarkdownBody(
+                                                        data: message['text'] as String,
+                                                        styleSheet: MarkdownStyleSheet(
+                                                          p: TextStyle(
+                                                            color: Colors.black87,
+                                                            fontSize: 14,
+                                                            height: 1.4,
+                                                          ),
+                                                          strong: TextStyle(
+                                                            color: Colors.black87,
+                                                            fontSize: 14,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                          listBullet: TextStyle(
+                                                            color: Colors.black87,
+                                                            fontSize: 14,
+                                                          ),
+                                                          h1: TextStyle(
+                                                            color: Colors.black87,
+                                                            fontSize: 16,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                          h2: TextStyle(
+                                                            color: Colors.black87,
+                                                            fontSize: 15,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                          h3: TextStyle(
+                                                            color: Colors.black87,
+                                                            fontSize: 14,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                ),
+                                              );
+                                            },
                                           ),
-                                          onSubmitted: _sendMessage,
-                                        ),
-
-                                      ),
-                                      SizedBox(width: 8),
-                                      Text('DenX is typing...', style: TextStyle(color: Colors.grey)),
-                                    ],
                                   ),
-                                ),
-            
-                              // Input field
-                              Container(
-                                padding: EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    top: BorderSide(color: Colors.grey.shade200),
-                                  ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: TextField(
-                                        controller: _messageController,
-                                        decoration: InputDecoration(
-                                          hintText: 'What are the early warning signs of dengue fever?',
-                                          hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(25),
-                                            borderSide: BorderSide(color: Colors.grey.shade300),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(25),
-                                            borderSide: BorderSide(color: Colors.grey.shade300),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(25),
-                                            borderSide: BorderSide(color: Colors.blue.shade600),
-                                          ),
-                                          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                        ),
-                                        onSubmitted: _sendMessage,
+                                  
+                                  // Loading indicator
+                                  if (_isLoading)
+                                    Padding(
+                                      padding: EdgeInsets.all(16),
+                                      child: Row(
+                                        children: [
+                                          SizedBox(width: 8),
+                                          Text('DenX is typing...', style: TextStyle(color: Colors.grey)),
+                                        ],
                                       ),
                                     ),
-                                    SizedBox(width: 8),
-                                    GestureDetector(
-                                      onTap: () => _sendMessage(_messageController.text),
-                                      child: Container(
-                                        padding: EdgeInsets.all(12),
-                                        decoration: BoxDecoration(
-                                          color: Colors.blue.shade600,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Icon(
-                                          Icons.send,
-                                          color: Colors.white,
-                                          size: 20,
-                                        ),
+              
+                                  // Input field
+                                  Container(
+                                    padding: EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        top: BorderSide(color: Colors.grey.shade200),
                                       ),
                                     ),
-                                  ],
-                                ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: TextField(
+                                            controller: _messageController,
+                                            focusNode: _textFieldFocusNode,
+                                            decoration: InputDecoration(
+                                              hintText: 'What are the early warning signs of dengue fever?',
+                                              hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(25),
+                                                borderSide: BorderSide(color: Colors.grey.shade300),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(25),
+                                                borderSide: BorderSide(color: Colors.grey.shade300),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(25),
+                                                borderSide: BorderSide(color: Colors.blue.shade600),
+                                              ),
+                                              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                            ),
+                                            onSubmitted: _sendMessage,
+                                          ),
+                                        ),
+                                        SizedBox(width: 8),
+                                        GestureDetector(
+                                          onTap: () => _sendMessage(_messageController.text),
+                                          child: Container(
+                                            padding: EdgeInsets.all(12),
+                                            decoration: BoxDecoration(
+                                              color: Colors.blue.shade600,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Icon(
+                                              Icons.send,
+                                              color: Colors.white,
+                                              size: 20,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 100), // Bottom padding for scrolling
-                ],
+                    SizedBox(height: 100), // Bottom padding for scrolling
+                  ],
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
