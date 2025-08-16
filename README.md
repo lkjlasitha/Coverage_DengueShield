@@ -27,6 +27,12 @@ python app.py
 # Runs on http://localhost:5000
 ```
 
+Or using Docker:
+```bash
+cd backend
+docker-compose up -d --build
+```
+
 ### 2. Admin Portal Setup
 ```bash
 cd dengue_shield_admin
@@ -62,9 +68,17 @@ docker-compose up -d
 ### Backend Environment
 Create `.env` file in `backend/` folder:
 ```env
-DATABASE_URL=sqlite:///dengue_shield.db
-SECRET_KEY=your-secret-key
-FLASK_ENV=development
+DB_USER=app_user
+DB_PASSWORD=app_password_here
+DB_HOST=localhost
+DB_NAME=appointments_db
+
+EMAIL_USER=
+EMAIL_PASS=
+SMTP_SERVER=
+SMTP_PORT=
+
+JWT_SECRET=
 ```
 
 ### Admin Portal Environment  
