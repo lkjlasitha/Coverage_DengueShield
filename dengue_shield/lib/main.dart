@@ -1,6 +1,11 @@
-import 'package:dengue_shield/screens/onboard/splash_screen.dart';
 import 'package:flutter/material.dart';
-void main() {
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'screens/apointment_screen/apointment.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -16,7 +21,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins', // Set the default font family here
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: SplashScreen()
+      home: MosquitoTestFlowScreen()
     );
   }
 }

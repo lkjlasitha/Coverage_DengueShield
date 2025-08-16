@@ -1,5 +1,7 @@
 import 'package:dengue_shield/config/theme.dart';
 import 'package:flutter/material.dart';
+import '../../services/auth_services/register_service.dart';
+import '../../services/message_service/message_service.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -15,12 +17,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  final _studentIdController = TextEditingController();
-  final _storeNameController = TextEditingController();
-  final _storeCategoryController = TextEditingController();
   bool _isLoading = false;
   bool _obscurePassword = true;
-  //final ImagePicker _picker = ImagePicker();
 
   @override
   void dispose() {
@@ -28,25 +26,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
-    _studentIdController.dispose();
-    _storeNameController.dispose();
-    _storeCategoryController.dispose();
     super.dispose();
   }
 
   Future<void> _register() async {
+    if (!_formKey.currentState!.validate()) return;
+    setState(() => _isLoading = true);
+
+    try {
+      final response = await RegistrationService.register(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+      if (!mounted) return;
+      MessageUtils.ShowAnyMessage(context, response['message'] ?? 'Registration successful!');
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+        );
+      });
+    } catch (e) {
+      if (!mounted) return;
+      MessageUtils.showApiErrorMessage(context, 'Registration faild !');
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
-  // Future<void> _selectImage() async {
-  //   final XFile? pickedFile =
-  //       await _picker.pickImage(source: ImageSource.gallery);
-
-  //   if (pickedFile != null) {
-  //     setState(() {
-  //       _profileImage = File(pickedFile.path);
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
