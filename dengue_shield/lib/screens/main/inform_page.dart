@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:convert';
 
 class InformScreen extends StatefulWidget {
@@ -15,19 +16,31 @@ class InformScreen extends StatefulWidget {
 class _InformScreenState extends State<InformScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _chatScrollController = ScrollController();
+  final FocusNode _textFieldFocusNode = FocusNode();
   List<Map<String, dynamic>> _messages = [];
   bool _isLoading = false;
+  bool _isTextFieldFocused = false;
 
   @override
   void initState() {
     super.initState();
     _loadChatHistory();
+    _textFieldFocusNode.addListener(() {
+      setState(() {
+        _isTextFieldFocused = _textFieldFocusNode.hasFocus;
+      });
+      // Scroll to bottom when text field is focused
+      if (_textFieldFocusNode.hasFocus) {
+        _scrollToBottomDelayed();
+      }
+    });
   }
 
   @override
   void dispose() {
     _messageController.dispose();
     _chatScrollController.dispose();
+    _textFieldFocusNode.dispose();
     super.dispose();
   }
 
@@ -74,7 +87,7 @@ class _InformScreenState extends State<InformScreen> {
       debugPrint("Sending message: $message");
       // Replace with your actual API endpoint
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/ask'), // Example API http://10.0.2.2:3000
+        Uri.parse('http://16.171.60.189:8000/ask'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -147,6 +160,21 @@ class _InformScreenState extends State<InformScreen> {
       }
     });
   }
+
+  void _scrollToBottomDelayed() {
+    // Add a slight delay to ensure the UI has updated after focus change
+    Future.delayed(Duration(milliseconds: 300), () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_chatScrollController.hasClients) {
+          _chatScrollController.animateTo(
+            _chatScrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        }
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -158,60 +186,86 @@ class _InformScreenState extends State<InformScreen> {
             top: screenWidth * 0.35,
             left: screenWidth * 0.04,
             right: screenWidth * 0.04,
-            bottom: 0,
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Emergency Medical Help Card
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
-                          blurRadius: 12,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 4,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(2),
-                            ),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height - (screenWidth * 0.35),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Emergency Medical Help Card
+                    Container(
+                      height:150,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.08),
+                            blurRadius: 12,
+                            offset: Offset(0, 4),
                           ),
-                          SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Stack(
+                          children: [
+                            Row(
                               children: [
-                                Text(
-                                  'Need Medical Help Fast?',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.black87,
+                                Container(
+                                  width: 4,
+                                  height: 170,
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(2),
                                   ),
                                 ),
-                                SizedBox(height: 4),
-                                Text(
-                                  'Call 1919 for the Government\nAmbulance Service',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.grey[600],
-                                    height: 1.3,
+                                SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Need Medical Help Fast?',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                      SizedBox(height: 4),
+                                      Text(
+                                        'Call 1919 for the Government\nAmbulance Service',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.grey[600],
+                                          height: 1.3,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Handle call action
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                ),
+                                child: Text('Call Now'),
+                              ),
+
                             ),
                           ),
                           ElevatedButton(
@@ -338,15 +392,34 @@ class _InformScreenState extends State<InformScreen> {
                             child: Row(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.all(12),
+
+                                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                   decoration: BoxDecoration(
-                                    color: Colors.green.shade50,
-                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.blue.shade600,
+                                    borderRadius: BorderRadius.circular(25),
                                   ),
-                                  child: Icon(
-                                    Icons.shield_outlined,
-                                    color: Colors.green,
-                                    size: 24,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        'Ask Den X',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Transform.translate(
+                                        offset: Offset(8, 0),
+                                        child: Image.asset(
+                                          'assets/icons/image.png',
+                                          width: 40,
+                                          height: 40,
+                                        ),
+                                      ),
+                                    ],
+
                                   ),
                                 ),
                                 SizedBox(width: 16),
@@ -368,112 +441,27 @@ class _InformScreenState extends State<InformScreen> {
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-            
-                  // Ask DenX Chatbot Section
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(18),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
-                          blurRadius: 12,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Header with DenX and clear history button
-                        Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue.shade600,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      'Ask Den X',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    SizedBox(width: 8),
-                                    Container(
-                                      padding: EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
-                                        '😊',
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Spacer(),
-                              IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: Text('Clear Chat History'),
-                                      content: Text('Are you sure you want to delete all chat messages?'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(context),
-                                          child: Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            _clearChatHistory();
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Delete'),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                icon: Icon(Icons.delete_outline, color: Colors.grey),
-                              ),
-                            ],
-                          ),
-                        ),
-            
-                        // Chat messages
-                        Container(
-                          height: 300,
-                          child: Column(
-                            children: [
-                              // Messages list
-                              Expanded(
-                                child: _messages.isEmpty
-                                    ? Center(
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Hi! How can I help you',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.grey[600],
+
+
+                          // Chat messages
+                          Container(
+                            height: _isTextFieldFocused ? 500 : 300,
+                            child: Column(
+                              children: [
+                                // Messages list
+                                Expanded(
+                                  child: _messages.isEmpty
+                                      ? Center(
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                'Hi! How can I help you',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.grey[600],
+                                                ),
+
                                               ),
                                             ),
                                             SizedBox(height: 4),
@@ -560,10 +548,31 @@ class _InformScreenState extends State<InformScreen> {
                                   padding: EdgeInsets.all(16),
                                   child: Row(
                                     children: [
-                                      SizedBox(
-                                        width: 20,
-                                        height: 20,
-                                        child: CircularProgressIndicator(strokeWidth: 2),
+
+                                      Expanded(
+                                        child: TextField(
+                                          controller: _messageController,
+                                          focusNode: _textFieldFocusNode,
+                                          decoration: InputDecoration(
+                                            hintText: 'What are the early warning signs of dengue fever?',
+                                            hintStyle: TextStyle(color: Colors.grey[400], fontSize: 14),
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(25),
+                                              borderSide: BorderSide(color: Colors.grey.shade300),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(25),
+                                              borderSide: BorderSide(color: Colors.grey.shade300),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(25),
+                                              borderSide: BorderSide(color: Colors.blue.shade600),
+                                            ),
+                                            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                                          ),
+                                          onSubmitted: _sendMessage,
+                                        ),
+
                                       ),
                                       SizedBox(width: 8),
                                       Text('DenX is typing...', style: TextStyle(color: Colors.grey)),
