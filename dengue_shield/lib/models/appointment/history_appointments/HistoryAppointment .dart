@@ -21,7 +21,7 @@ class HistoryAppointment {
   factory HistoryAppointment.fromApi(Map<String, dynamic> json) {
     return HistoryAppointment(
       referenceCode: json['referenceNum'] ?? '',
-      patientName: json['patientName'] ?? 'Unknown',
+      patientName: json['userName'] ?? '',
       testType: json['category'] ?? '',
       hospital: json['hospitalName'] ?? '',
       date: DateTime.parse(json['date'] ?? DateTime.now().toIso8601String()),

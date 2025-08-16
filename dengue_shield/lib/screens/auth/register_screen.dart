@@ -3,6 +3,7 @@ import 'package:dengue_shield/screens/onboard/second_onboard_screen.dart';
 import 'package:flutter/material.dart';
 import '../../services/auth_services/register_service.dart';
 import '../../services/message_service/message_service.dart';
+import '../../services/secure_storage_service/secure_storage.dart';
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -41,18 +42,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
         password: _passwordController.text,
       );
       if (!mounted) return;
-      MessageUtils.ShowAnyMessage(context, response['message'] ?? 'Registration successful!');
+      final String accessToken = response['token'] ?? '';
+      _saveTokens(accessToken);
       Future.delayed(const Duration(seconds: 1), () {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => SecondOnboardScreen()),
         );
       });
+      MessageUtils.ShowAnyMessage(context, response['message'] ?? 'Registration successful!');
     } catch (e) {
       if (!mounted) return;
       MessageUtils.showApiErrorMessage(context, 'Registration faild !');
     } finally {
       if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _saveTokens(String accessToken) async {
+    try {
+      final storage = SecureStorageService();
+      await storage.saveSecureData('token', accessToken);
+      int currentTime = DateTime.now().millisecondsSinceEpoch;
+      await storage.saveSecureData('accessToken_timestamp', currentTime.toString());
+    } catch (e) {
+      MessageUtils.showApiErrorMessage(context, 'Failed to save data');
     }
   }
 

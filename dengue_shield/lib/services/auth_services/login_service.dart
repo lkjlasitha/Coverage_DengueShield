@@ -62,24 +62,19 @@ class UserAuthenticationService {
 
   Future<void> _handleSuccessfulSignIn(http.Response response) async {
     final Map<String, dynamic> responseBody = json.decode(response.body);
-
     final String accessToken = responseBody['token'] ?? '';
     //final String role = responseBody['role'] ?? 'user';
-
     await _saveTokens(accessToken);
-
     if (progressDialog.isShowing()) {
       await progressDialog.hide();
     }
-
-    MessageUtils.showSignInSuccessMessage(context);
-
     Future.delayed(const Duration(milliseconds: 300), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => SecondOnboardScreen()),
       );
     });
+    MessageUtils.showSignInSuccessMessage(context);
   }
 
   void _handleErrorResponse(http.Response response) {
