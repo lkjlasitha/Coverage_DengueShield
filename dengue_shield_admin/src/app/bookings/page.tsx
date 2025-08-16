@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Sidebar from '@/components/Sidebar';
 import QRScanner from '@/components/QRScanner';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface Appointment {
   PDF: boolean;
@@ -26,6 +27,7 @@ const BookingsPage: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
   const [isQrScannerOpen, setIsQrScannerOpen] = useState(false);
+  const { user } = useAuth();
 
   // Fetch appointments from API
   useEffect(() => {
@@ -210,10 +212,23 @@ const BookingsPage: React.FC = () => {
           <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gray-900">Bookings</h1>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">10-08-2025</span>
-              <div className="w-6 h-6 bg-gray-300 rounded"></div>
-              <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
-            </div>
+                <div className="text-sm text-gray-500">
+                  {new Date().toLocaleDateString('en-US', { 
+                    weekday: 'short', 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                  })}
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-[#4F46E5] rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm font-medium">
+                      {user?.name?.charAt(0) || 'U'}
+                    </span>
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">{user?.name}</span>
+                </div>
+              </div>
           </header>
           
           <main className="p-6">
@@ -233,7 +248,7 @@ const BookingsPage: React.FC = () => {
                       placeholder="Search by reference number or email"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-[#4F46E5] focus:border-[#4F46E5]"
                     />
                   </div>
 
@@ -248,7 +263,7 @@ const BookingsPage: React.FC = () => {
                   {/* QR Scanner */}
                   <button 
                     onClick={handleQrScan}
-                    className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex-shrink-0"
+                    className="flex items-center space-x-2 px-4 py-2 bg-[#4F46E5] text-white rounded-lg hover:bg-blue-700 flex-shrink-0"
                   >
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 16h4m-4 0v1m-2.5-5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
@@ -262,7 +277,7 @@ const BookingsPage: React.FC = () => {
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5]"
                   >
                     <option value="all">All Status</option>
                     <option value="Not Started">Not Started</option>
@@ -273,7 +288,7 @@ const BookingsPage: React.FC = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="px-3 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5]"
                   >
                     <option value="date">Sort by Date</option>
                     <option value="referenceNum">Sort by Reference</option>
@@ -293,7 +308,7 @@ const BookingsPage: React.FC = () => {
               <div className="overflow-hidden">
                 {isLoading ? (
                   <div className="flex justify-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4F46E5]"></div>
                   </div>
                 ) : (
                   <table className="min-w-full">
@@ -331,7 +346,7 @@ const BookingsPage: React.FC = () => {
                             <select
                               value={appointment.status}
                               onChange={(e) => updateAppointmentStatus(appointment.referenceNum, e.target.value)}
-                              className={`text-xs font-medium px-3 py-1 rounded-full border-0 focus:ring-2 focus:ring-blue-500 ${getStatusBadgeColor(appointment.status || 'Not Started')}`}
+                              className={`text-xs font-medium px-3 py-1 rounded-full border-0 focus:ring-2 focus:ring-[#4F46E5] ${getStatusBadgeColor(appointment.status || 'Not Started')}`}
                             >
                               <option value="Not Started">Not Started</option>
                               <option value="Ongoing">Ongoing</option>

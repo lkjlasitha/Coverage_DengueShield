@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import Logo from '../Logo';
+import Image from 'next/image';
 
 interface SidebarProps {
   className?: string;
@@ -25,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
         </svg>
       ),
       current: pathname === '/dashboard',
-      bgColor: 'bg-blue-500',
+      bgColor: 'bg-[#4F46E5]',
     },
     {
       name: 'Map',
@@ -77,13 +77,33 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
       ),
       current: pathname === '/bookings',
     },
+     {
+      name: 'Fog Requests',
+      href: '/fog-requests',
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12a4 4 0 118 0c0 2-2 2-4 2s-4 0-4-2z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 16a4 4 0 108 0c0 1.5-1.5 1.5-4 1.5s-4 0-4-1.5z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 20a4 4 0 1012 0c0 1-1 1-6 1s-6 0-6-1z" />
+        </svg>
+      ),
+      current: pathname === '/fog-requests',
+    },
   ];
 
   return (
     <div className={`bg-white h-screen w-64 fixed left-0 top-0 border-r border-gray-200 flex flex-col ${className}`}>
       {/* Logo */}
       <div className="p-6 border-b border-gray-200">
-        <Logo />
+        <div className={`flex items-center justify-center bg-transparent`}>
+            <Image
+                src="/denguelogo.svg"
+                width={200}
+                height={300}
+                alt="DengueShield Logo"
+                className="object-contain"
+            />
+          </div>
       </div>
 
       {/* Navigation */}
@@ -96,7 +116,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
               href={item.href}
               className={`flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors group ${
                 isActive
-                  ? `${item.bgColor || 'bg-blue-500'} text-white`
+                  ? `${item.bgColor || 'bg-[#4F46E5]'} text-white`
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
               }`}
             >
@@ -115,7 +135,7 @@ const Sidebar: React.FC<SidebarProps> = ({ className = '' }) => {
           onClick={logout}
           className="flex items-center w-full px-3 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors group"
         >
-          <svg className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 mr-3 text-red-400 group-hover:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
           </svg>
           Log Out

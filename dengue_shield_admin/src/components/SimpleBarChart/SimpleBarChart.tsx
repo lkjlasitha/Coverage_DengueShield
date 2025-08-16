@@ -10,7 +10,7 @@ interface SimpleBarChartProps {
 const SimpleBarChart: React.FC<SimpleBarChartProps> = ({
   data,
   height = 60,
-  color = 'bg-blue-500',
+  color = 'bg-[#4F46E5]',
   className = '',
 }) => {
   const maxValue = Math.max(...data);

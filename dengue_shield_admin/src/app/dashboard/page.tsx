@@ -39,7 +39,7 @@ const DashboardPage: React.FC = () => {
                   })}
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-[#4F46E5] rounded-full flex items-center justify-center">
                     <span className="text-white text-sm font-medium">
                       {user?.name?.charAt(0) || 'U'}
                     </span>
@@ -58,7 +58,7 @@ const DashboardPage: React.FC = () => {
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                 <div className="flex items-center space-x-3 mb-4">
                   <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-[#4F46E5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
                     </svg>
                   </div>
@@ -66,7 +66,7 @@ const DashboardPage: React.FC = () => {
                 <h3 className="text-2xl font-bold text-gray-900">1,252</h3>
                 <p className="text-sm text-gray-600">Active Users</p>
                 <div className="mt-4">
-                  <SimpleBarChart data={userActivityData} color="bg-blue-500" height={40} />
+                  <SimpleBarChart data={userActivityData} color="bg-[#4F46E5]" height={40} />
                 </div>
               </div>
 
@@ -145,7 +145,7 @@ const DashboardPage: React.FC = () => {
                       <h4 className="font-medium text-gray-900">Field Reports</h4>
                       <p className="text-sm text-gray-600">12 pending confirmations</p>
                     </div>
-                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                    <button className="text-[#4F46E5] hover:text-blue-700 text-sm font-medium">
                       Review
                     </button>
                   </div>
@@ -155,7 +155,7 @@ const DashboardPage: React.FC = () => {
                       <h4 className="font-medium text-gray-900">Lab Results</h4>
                       <p className="text-sm text-gray-600">5 Awaits confirmations</p>
                     </div>
-                    <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                    <button className="text-[#4F46E5] hover:text-blue-700 text-sm font-medium">
                       View
                     </button>
                   </div>
@@ -176,7 +176,7 @@ const DashboardPage: React.FC = () => {
                       <span className="text-sm text-gray-600">45%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-blue-500 h-2 rounded-full" style={{ width: '45%' }}></div>
+                      <div className="bg-[#4F46E5] h-2 rounded-full" style={{ width: '45%' }}></div>
                     </div>
                   </div>
                 </div>

@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
-import Logo from '@/components/Logo';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
+import Image from 'next/image';
 
 const SignupPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -142,7 +142,15 @@ const SignupPage: React.FC = () => {
         {/* Logo and Header */}
         <div className="text-center">
           <div className="flex justify-center mb-6">
-            <Logo size="lg" />
+            <div className={`flex items-center justify-center bg-transparent`}>
+                <Image
+                    src="/denguelogo.svg"
+                    width={200}
+                    height={300}
+                    alt="DengueShield Logo"
+                    className="object-contain"
+                />
+              </div>
           </div>
           <h2 className="text-3xl font-extrabold text-gray-900 mb-2">
             Create Account
@@ -179,7 +187,7 @@ const SignupPage: React.FC = () => {
                 required
                 value={formData.name}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5] transition-colors"
                 placeholder="Enter your full name"
               />
             </div>
@@ -196,7 +204,7 @@ const SignupPage: React.FC = () => {
                 required
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5] transition-colors"
                 placeholder="your.name@gov.domain"
               />
               <p className="mt-1 text-xs text-gray-500">
@@ -213,7 +221,7 @@ const SignupPage: React.FC = () => {
                 name="role"
                 value={formData.role}
                 onChange={(e) => setFormData(prev => ({ ...prev, role: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5] transition-colors"
               >
                 <option value="admin">Admin</option>
                 <option value="officer">Officer</option>
@@ -234,7 +242,7 @@ const SignupPage: React.FC = () => {
                   required
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors pr-10"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5] transition-colors pr-10"
                   placeholder="Create a strong password"
                 />
                 <button
@@ -272,7 +280,7 @@ const SignupPage: React.FC = () => {
                   required
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors pr-10"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5] transition-colors pr-10"
                   placeholder="Confirm your password"
                 />
                 <button
@@ -300,15 +308,15 @@ const SignupPage: React.FC = () => {
                 name="terms"
                 type="checkbox"
                 required
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                className="h-4 w-4 text-[#4F46E5] focus:ring-[#4F46E5] border-gray-300 rounded"
               />
               <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
                 I agree to the{' '}
-                <a href="#" className="text-blue-600 hover:text-blue-500">
+                <a href="#" className="text-[#4F46E5] hover:text-[#4F46E5]">
                   Terms of Service
                 </a>{' '}
                 and{' '}
-                <a href="#" className="text-blue-600 hover:text-blue-500">
+                <a href="#" className="text-[#4F46E5] hover:text-[#4F46E5]">
                   Privacy Policy
                 </a>
               </label>
@@ -317,7 +325,7 @@ const SignupPage: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#4F46E5] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4F46E5] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <div className="flex items-center">
@@ -343,7 +351,7 @@ const SignupPage: React.FC = () => {
             <div className="mt-6 text-center">
               <Link
                 href="/login"
-                className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
+                className="font-medium text-[#4F46E5] hover:text-[#4F46E5] transition-colors"
               >
                 Sign in to your account
               </Link>

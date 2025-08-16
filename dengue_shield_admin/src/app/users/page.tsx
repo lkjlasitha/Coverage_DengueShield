@@ -3,9 +3,11 @@
 import React, { useState } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Sidebar from '@/components/Sidebar';
+import { useAuth } from '@/contexts/AuthContext';
 
 const UsersPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const { user } = useAuth();
 
   // Mock user data
   const users = [
@@ -33,10 +35,23 @@ const UsersPage: React.FC = () => {
           <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gray-900">User</h1>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">10-08-2025</span>
-              <div className="w-6 h-6 bg-gray-300 rounded"></div>
-              <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
-            </div>
+                <div className="text-sm text-gray-500">
+                  {new Date().toLocaleDateString('en-US', { 
+                    weekday: 'short', 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                  })}
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-[#4F46E5] rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm font-medium">
+                      {user?.name?.charAt(0) || 'U'}
+                    </span>
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">{user?.name}</span>
+                </div>
+              </div>
           </header>
           <main className="p-6">
             {/* Search and Filter Bar */}
@@ -54,7 +69,7 @@ const UsersPage: React.FC = () => {
                       placeholder="Search"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="block w-80 pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                      className="block w-80 pl-10 pr-3 py-2 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-[#4F46E5] focus:border-[#4F46E5]"
                     />
                   </div>
                   <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50">
@@ -64,7 +79,7 @@ const UsersPage: React.FC = () => {
                     <span>Filter</span>
                   </button>
                 </div>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors">
+                <button className="bg-[#4F46E5] hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors">
                   Add Admin
                 </button>
               </div>

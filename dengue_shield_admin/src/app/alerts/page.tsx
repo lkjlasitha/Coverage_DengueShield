@@ -3,10 +3,12 @@
 import React, { useState } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Sidebar from '@/components/Sidebar';
+import { useAuth } from '@/contexts/AuthContext';
 
 const AlertsPage: React.FC = () => {
   const [selectedMethod, setSelectedMethod] = useState('Send Now');
-  
+  const { user } = useAuth();
+
   return (
     <ProtectedRoute requireAuth={true}>
       <div className="flex h-screen bg-white">
@@ -15,10 +17,23 @@ const AlertsPage: React.FC = () => {
           <header className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gray-900">Alerts & Notices</h1>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">10-08-2025</span>
-              <div className="w-6 h-6 bg-gray-300 rounded"></div>
-              <div className="w-8 h-8 bg-blue-500 rounded-full"></div>
-            </div>
+                <div className="text-sm text-gray-500">
+                  {new Date().toLocaleDateString('en-US', { 
+                    weekday: 'short', 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                  })}
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-[#4F46E5] rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm font-medium">
+                      {user?.name?.charAt(0) || 'U'}
+                    </span>
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">{user?.name}</span>
+                </div>
+              </div>
           </header>
           <main className="p-6 overflow-y-auto">
             {/* Create New Alert Form */}
@@ -30,7 +45,7 @@ const AlertsPage: React.FC = () => {
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">District</label>
-                    <select className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <select className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5]">
                       <option>Colombo</option>
                       <option>Kandy</option>
                       <option>Galle</option>
@@ -42,7 +57,7 @@ const AlertsPage: React.FC = () => {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
                     <textarea
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5]"
                       rows={4}
                       placeholder="Type here"
                     />
@@ -84,14 +99,14 @@ const AlertsPage: React.FC = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Alert Title</label>
                     <input
                       type="text"
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5]"
                       placeholder="Enter title"
                     />
                   </div>
                   
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Target Audience</label>
-                    <select className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <select className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5]">
                       <option>Officers Only</option>
                       <option>Public and Officers</option>
                     </select>
@@ -101,7 +116,7 @@ const AlertsPage: React.FC = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Additional Info</label>
                     <input
                       type="text"
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:ring-2 focus:ring-[#4F46E5] focus:border-[#4F46E5]"
                       placeholder="Type here"
                     />
                   </div>
@@ -112,13 +127,13 @@ const AlertsPage: React.FC = () => {
               <div className="flex space-x-4 mt-8">
                 <button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
+                  className="bg-[#4F46E5] hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors"
                 >
                   Send Alert
                 </button>
                 <button
                   type="button"
-                  className="border border-blue-600 text-blue-600 font-semibold px-8 py-3 rounded-lg transition-colors hover:bg-blue-50"
+                  className="border border-[#4F46E5] text-[#4F46E5] font-semibold px-8 py-3 rounded-lg transition-colors hover:bg-blue-50"
                 >
                   Preview
                 </button>
